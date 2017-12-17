@@ -130,43 +130,38 @@ class GeofenceHandler: NSObject {
         }
     }
     
-//    private var fetchCurrentLocationHandler: ((Geofence.Location?, Geofence.Error?) -> Void)?
-    func fetchCurrentLocation(completion: @escaping ((Geofence.Location?, Geofence.Error?) -> Void)) {
-//        manager.startUpdatingLocation()
-//        fetchCurrentLocationHandler = { location, error in
-//            completion(location, error)
-//        }
-    }
-    
-//    private var fetchGeofenceStateHandler: ((Geofence.State) -> Void)?
-    func fetchGeofenceState(withIdentifier identifier: String, completion: @escaping ((Geofence.State) -> Void)) {
-//        guard let region = manager.monitoredRegions.first(where: { region in
-//            region.identifier == identifier
-//        }) else {
-//            return
-//        }
-//        fetchGeofenceStateHandler = { state in
-//            completion(state)
-//        }
-//        manager.requestState(for: region)
-    }
-    
     func allGeofenceID() -> [String] {
         return manager.monitoredRegions.map { $0.identifier }
     }
     
-//    private var addGeofenceHandler: ((String?, Error?) -> Void)?
-    func addGeofence(geofence: Geofence, completion: @escaping ((Error?) -> Void)) {
-//        addGeofenceHandler = { identifier, error in
-//            if let identifier = identifier {
-//                NSLog("add geofence identifier: %@(%f, %f -- %f)",
-//                      identifier, geofence.location.latitude, geofence.location.longitude, geofence.radius)
-//            }
-//            completion(error)
-//        }
-//        let center = CLLocationCoordinate2DMake(geofence.location.latitude, geofence.location.longitude)
-//        let region = CLCircularRegion(center: center, radius: geofence.radius, identifier: geofence.identifier)
-//        manager.startMonitoring(for: region)
+    private var fetchCurrentLocationHandler: ((Geofence.Location?, Geofence.Error?) -> Void)?
+    func fetchCurrentLocation(completion: @escaping ((Geofence.Location?, Geofence.Error?) -> Void)) {
+        manager.startUpdatingLocation()
+        fetchCurrentLocationHandler = { location, error in
+            completion(location, error)
+        }
+    }
+    
+    private var fetchGeofenceStateHandlerSource: [String: ((Geofence.State) -> Void)] = [:]
+    func fetchGeofenceState(withIdentifier identifier: String, completion: @escaping ((Geofence.State) -> Void)) {
+        guard let region = manager.monitoredRegions.first(where: { region in
+            region.identifier == identifier
+        }) else {
+            return
+        }
+        fetchGeofenceStateHandlerSource[identifier] = { state in
+            completion(state)
+        }
+        manager.requestState(for: region)
+    }
+    
+    func addGeofence(geofence: Geofence) {
+        let center = CLLocationCoordinate2DMake(geofence.location.latitude, geofence.location.longitude)
+        let region = CLCircularRegion(center: center, radius: geofence.radius, identifier: geofence.identifier)
+        manager.startMonitoring(for: region)
+        NSLog("add geofence identifier: %@(%f, %f -- %f)",
+              geofence.identifier, geofence.location.latitude, geofence.location.longitude, geofence.radius)
+        manager.requestState(for: region)
     }
     
     func removeGeofence(identifier: String) {
@@ -203,32 +198,32 @@ extension GeofenceHandler: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        guard let clLocation = locations.last else {
-//            fetchCurrentLocationHandler?(nil, .notFoundCurrentLocation)
-//            return
-//        }
-//        let location = Geofence.Location(
-//            latitude: clLocation.coordinate.latitude, longitude: clLocation.coordinate.longitude)
-//        fetchCurrentLocationHandler?(location, nil)
-//        manager.stopUpdatingLocation()
+        guard let clLocation = locations.last else {
+            fetchCurrentLocationHandler?(nil, .notFoundCurrentLocation)
+            return
+        }
+        let location = Geofence.Location(
+            latitude: clLocation.coordinate.latitude, longitude: clLocation.coordinate.longitude)
+        fetchCurrentLocationHandler?(location, nil)
+        manager.stopUpdatingLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-//        print("region: \(region.identifier) state: \(state)")
-//        fetchGeofenceStateHandler?({
-//            switch state {
-//            case .outside:
-//                return .outside
-//            case .inside:
-//                return .inside
-//            case .unknown:
-//                return .unknown
-//            }
-//        }())
+        print("region: \(region.identifier) state: \(state)")
+        fetchGeofenceStateHandlerSource[region.identifier]?({
+            switch state {
+            case .outside:
+                return .outside
+            case .inside:
+                return .inside
+            case .unknown:
+                return .unknown
+            }
+        }())
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//        fetchCurrentLocationHandler?(nil, .fetchFailedCurrentLocation(error))
+        fetchCurrentLocationHandler?(nil, .fetchFailedCurrentLocation(error))
     }
     
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
@@ -321,21 +316,19 @@ struct GeofenceBuilder {
     }
     
     func fetchCurrentLocation(completion: @escaping (Geofence.Location?, Geofence.Error?) -> Void) {
-//        handler.fetchCurrentLocation(completion: completion)
+        handler.fetchCurrentLocation(completion: completion)
     }
     
     func fetchGeofenceState(identifier: String, completion: @escaping ((Geofence.State) -> Void)) {
-//        handler.fetchGeofen;ceState(withIdentifier: identifier, completion: completion)
+        handler.fetchGeofenceState(withIdentifier: identifier, completion: completion)
     }
     
     func findAllGeofenceID() -> [String] {
         return handler.allGeofenceID()
     }
     
-    func build(geofence: Geofence, completion: @escaping ((Error?) -> Void)) {
-//        handler.addGeofence(geofence: geofence) { error in
-//            completion(error)
-//        }
+    func build(geofence: Geofence) {
+        handler.addGeofence(geofence: geofence)
     }
     
     func destroy(geofenceIdentifier: String) {

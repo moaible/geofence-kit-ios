@@ -148,8 +148,19 @@ class GeofenceConsoleViewController: UIViewController {
     
     @IBAction func didTapAddGeofenceButton(_ sender: UIButton) {
         enableUI(false)
-        /* do something */
-        enableUI(true)
+        builder.fetchCurrentLocation { [weak self] (location, error) in
+            if let error = error {
+                self?.showAlert(title: "Failed", message: error.localizedDescription)
+            } else if let location = location {
+                print(location)
+                self?.builder.build(geofence: Geofence(
+                    identifier: "lat:\(location.latitude),lng:\(location.longitude)",
+                    radius: 100,
+                    location: location))
+            }
+            self?.geofenceTableView.reloadData()
+            self?.enableUI(true)
+        }
 //        builder.fetchCurrentLocation { [weak self] (location, error) in
 //            if let error = error {
 //                self?.showAlert(title: "location error", message: error.localizedDescription)
@@ -184,6 +195,9 @@ extension GeofenceConsoleViewController: UITableViewDataSource, UITableViewDeleg
         let identifier = builder.findAllGeofenceID()[indexPath.row]
         cell.textLabel?.text = identifier
         cell.detailTextLabel?.text = "connecting..."
+        builder.fetchGeofenceState(identifier: identifier) { state in
+            cell.detailTextLabel?.text = "\(state)"
+        }
         return cell
     }
     

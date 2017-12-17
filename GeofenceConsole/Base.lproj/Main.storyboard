@@ -24,7 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GEOFENCE CONSOLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHv-2i-lVN">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GEOFENCE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHv-2i-lVN">
                                 <rect key="frame" x="0.0" y="50" width="375" height="25"/>
                                 <fontDescription key="fontDescription" name="HiraginoSans-W6" family="Hiragino Sans" pointSize="25"/>
                                 <color key="textColor" red="0.29803921570000003" green="0.29803921570000003" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -34,7 +34,7 @@
                                 <rect key="frame" x="0.0" y="105" width="375" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privacy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2YE-HQ-0dr">
-                                        <rect key="frame" x="20" y="15" width="72" height="20"/>
+                                        <rect key="frame" x="20" y="0.0" width="72" height="50"/>
                                         <fontDescription key="fontDescription" name="HiraginoSans-W3" family="Hiragino Sans" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -48,10 +48,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="2YE-HQ-0dr" secondAttribute="bottom" id="2yA-JS-4vq"/>
                                     <constraint firstAttribute="trailing" secondItem="mkX-kx-ooS" secondAttribute="trailing" constant="20" id="833-qR-odZ"/>
                                     <constraint firstItem="2YE-HQ-0dr" firstAttribute="centerY" secondItem="Gke-Rp-u68" secondAttribute="centerY" id="HJc-zC-JO6"/>
                                     <constraint firstItem="2YE-HQ-0dr" firstAttribute="leading" secondItem="Gke-Rp-u68" secondAttribute="leading" constant="20" id="Nya-bD-Ixr"/>
                                     <constraint firstAttribute="height" constant="50" id="Zjb-Ik-rLg"/>
+                                    <constraint firstItem="2YE-HQ-0dr" firstAttribute="top" secondItem="Gke-Rp-u68" secondAttribute="top" id="cmv-mb-Bba"/>
                                     <constraint firstItem="mkX-kx-ooS" firstAttribute="centerY" secondItem="Gke-Rp-u68" secondAttribute="centerY" id="n7S-m7-dsQ"/>
                                 </constraints>
                             </view>
