@@ -7,7 +7,8 @@ target 'GeofenceConsole' do
 
   # Pods for GeofenceConsole
   pod 'SwiftyUserDefaults'
-  
+  pod 'SwiftyBeaver'
+
   target 'GeofenceConsoleTests' do
     inherit! :search_paths
     # Pods for testing

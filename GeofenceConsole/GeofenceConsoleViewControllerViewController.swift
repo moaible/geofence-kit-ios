@@ -9,6 +9,33 @@
 import UIKit
 import SwiftyUserDefaults
 
+class LogViewController: UIViewController {
+    
+    lazy var textView = UITextView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel, target: self, action: #selector(LogViewController.didTapCloseButton))
+        textView.isEditable = false
+        title = "LOG"
+        view = textView
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        do {
+            textView.text = try String(contentsOf: logFile.logFileURL!, encoding: String.Encoding.utf8)
+        } catch {
+            textView.text = error.localizedDescription
+        }
+    }
+    
+    @objc func didTapCloseButton() {
+        dismiss(animated: true, completion: nil)
+    }
+}
+
 class GeofenceConsoleViewController: UIViewController {
     
     var builder = GeofenceBuilder()
@@ -60,6 +87,14 @@ class GeofenceConsoleViewController: UIViewController {
         builder.arrowsBackground = arrowsBackground
         builder.reportDistance = Double(reportDistanceValue)
         builder.accuracy = accuracy(at: accuracySegmentIndex)
+        builder.entringGeofence = { [weak self] identifier in
+            log.debug("entringGeofence ," + identifier)
+            self?.geofenceTableView.reloadData()
+        }
+        builder.exitingGeofence = { [weak self] identifier in
+            log.debug("exitingGeofence ," + identifier)
+            self?.geofenceTableView.reloadData()
+        }
         configure()
     }
     
@@ -129,6 +164,12 @@ class GeofenceConsoleViewController: UIViewController {
     
     // MARK: - Action
     
+    @IBAction func didTapLogButton(_ sender: UIButton) {
+        let viewController = LogViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        present(navigationController, animated: true, completion: nil)
+    }
+    
     @IBAction func didChangeArrowsBackgroundSwitch(_ sender: UISwitch) {
         arrowsBackground = sender.isOn
         builder.arrowsBackground = sender.isOn
@@ -152,7 +193,6 @@ class GeofenceConsoleViewController: UIViewController {
             if let error = error {
                 self?.showAlert(title: "Failed", message: error.localizedDescription)
             } else if let location = location {
-                print(location)
                 self?.builder.build(geofence: Geofence(
                     identifier: "lat:\(location.latitude),lng:\(location.longitude)",
                     radius: 100,
@@ -161,30 +201,12 @@ class GeofenceConsoleViewController: UIViewController {
             self?.geofenceTableView.reloadData()
             self?.enableUI(true)
         }
-//        builder.fetchCurrentLocation { [weak self] (location, error) in
-//            if let error = error {
-//                self?.showAlert(title: "location error", message: error.localizedDescription)
-//                return
-//            }
-//            self?.builder.build(geofence: .init(
-//                identifier: "rad:100,lat:\(location!.latitude),lon:\(location!.longitude)",
-//                radius: 100,
-//                location: location!))
-//            { [weak self] error in
-//                self?.enableUI(true)
-//                if let error = error {
-//                    self?.showAlert(title: "追加エラー", message: error.localizedDescription)
-//                }
-//                self?.geofenceTableView.reloadData()
-//            }
-//        }
     }
     
     // MARK: - Memory management
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 }
 
@@ -192,20 +214,46 @@ extension GeofenceConsoleViewController: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell.init(style: .subtitle, reuseIdentifier: "GeofenceConsoleViewController")
-        let identifier = builder.findAllGeofenceID()[indexPath.row]
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
+        let allID = builder.findAllGeofenceID()
+        let idCount = allID.count
+        guard idCount > 0 else {
+            cell.textLabel?.text = "registered geofence is empty"
+            cell.textLabel?.textColor = .lightGray
+            cell.detailTextLabel?.text = ""
+            cell.selectionStyle = .none
+            return cell
+        }
+        let identifier = allID[indexPath.row]
         cell.textLabel?.text = identifier
+        cell.textLabel?.textColor = .black
         cell.detailTextLabel?.text = "connecting..."
+        cell.selectionStyle = .default
         builder.fetchGeofenceState(identifier: identifier) { state in
-            cell.detailTextLabel?.text = "\(state)"
+            cell.detailTextLabel?.text = "(\(state))"
         }
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return builder.findAllGeofenceID().count > 0 ? 44 : tableView.bounds.height
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return builder.findAllGeofenceID().count
+        return max(builder.findAllGeofenceID().count, 1)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return builder.findAllGeofenceID().count > 0
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let identifier = builder.findAllGeofenceID()[indexPath.row]
+        builder.destroy(geofenceIdentifier: identifier)
+        tableView.reloadData()
     }
 }

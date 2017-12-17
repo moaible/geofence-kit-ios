@@ -26,6 +26,8 @@
 	<string>always location privacy description</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>when in app use location privacy description</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>always location privacy description</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

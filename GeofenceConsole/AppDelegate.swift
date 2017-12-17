@@ -6,16 +6,20 @@
 //  Copyright © 2017年 moaible. All rights reserved.
 //
 
+import Foundation
 import UIKit
+import SwiftyBeaver
+
+let log = SwiftyBeaver.self
+let logFile = FileDestination()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        log.addDestination(logFile)
         return true
     }
 

@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -232,6 +231,17 @@
                                     <constraint firstAttribute="trailing" secondItem="ksz-Iy-Qh9" secondAttribute="trailing" constant="20" id="yo8-9b-Eg3"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifk-OM-93Q">
+                                <rect key="frame" x="314" y="35" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="4ws-KY-afe"/>
+                                    <constraint firstAttribute="height" constant="50" id="bbA-QR-Cz0"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="log"/>
+                                <connections>
+                                    <action selector="didTapLogButton:" destination="bKd-7W-W8q" eventType="touchUpInside" id="Yet-0r-Zp4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -243,6 +253,7 @@
                             <constraint firstItem="KHv-2i-lVN" firstAttribute="top" secondItem="pTJ-Hc-xVR" secondAttribute="top" constant="30" id="Hmc-Lm-Nbx"/>
                             <constraint firstItem="oMr-5W-l9V" firstAttribute="top" secondItem="SmF-gK-3Jh" secondAttribute="bottom" constant="10" id="LHe-E3-4GQ"/>
                             <constraint firstItem="Gke-Rp-u68" firstAttribute="top" secondItem="KHv-2i-lVN" secondAttribute="bottom" constant="30" id="Obg-UD-2d9"/>
+                            <constraint firstItem="ifk-OM-93Q" firstAttribute="top" secondItem="pTJ-Hc-xVR" secondAttribute="top" constant="15" id="Qln-S4-DjY"/>
                             <constraint firstItem="KHv-2i-lVN" firstAttribute="leading" secondItem="pTJ-Hc-xVR" secondAttribute="leading" id="Ueu-VN-cPg"/>
                             <constraint firstItem="Cdb-bX-0l1" firstAttribute="leading" secondItem="pTJ-Hc-xVR" secondAttribute="leading" id="ZJo-7l-jOT"/>
                             <constraint firstItem="SmF-gK-3Jh" firstAttribute="top" secondItem="Uc7-eP-xg2" secondAttribute="bottom" constant="20" id="a8u-Qh-OLo"/>
@@ -254,6 +265,7 @@
                             <constraint firstItem="pTJ-Hc-xVR" firstAttribute="trailing" secondItem="KHv-2i-lVN" secondAttribute="trailing" id="wkR-kf-QQ0"/>
                             <constraint firstItem="Cdb-bX-0l1" firstAttribute="top" secondItem="oMr-5W-l9V" secondAttribute="bottom" constant="20" id="xNd-vT-gmX"/>
                             <constraint firstItem="Cdb-bX-0l1" firstAttribute="trailing" secondItem="pTJ-Hc-xVR" secondAttribute="trailing" id="zXE-yJ-zd2"/>
+                            <constraint firstItem="pTJ-Hc-xVR" firstAttribute="trailing" secondItem="ifk-OM-93Q" secondAttribute="trailing" constant="10" id="zZf-Sh-AiA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pTJ-Hc-xVR"/>
                     </view>
@@ -272,4 +284,7 @@
             <point key="canvasLocation" x="136.80000000000001" y="115.59220389805098"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="log" width="50" height="50"/>
+    </resources>
 </document>

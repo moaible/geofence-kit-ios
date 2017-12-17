@@ -159,9 +159,7 @@ class GeofenceHandler: NSObject {
         let center = CLLocationCoordinate2DMake(geofence.location.latitude, geofence.location.longitude)
         let region = CLCircularRegion(center: center, radius: geofence.radius, identifier: geofence.identifier)
         manager.startMonitoring(for: region)
-        NSLog("add geofence identifier: %@(%f, %f -- %f)",
-              geofence.identifier, geofence.location.latitude, geofence.location.longitude, geofence.radius)
-        manager.requestState(for: region)
+        log.debug("add geofence identifier: \(geofence.identifier)(\(geofence.location.latitude), \(geofence.location.longitude) -- \(geofence.radius)")
     }
     
     func removeGeofence(identifier: String) {
@@ -170,13 +168,13 @@ class GeofenceHandler: NSObject {
         }) else {
             return
         }
-        NSLog("remove geofence identifier: %@", identifier)
+        log.debug("remove geofence identifier: \(identifier)")
         manager.stopMonitoring(for: region)
     }
     
     func removeAllGeofence() {
         manager.monitoredRegions.forEach { [weak self] region in
-            NSLog("remove geofence identifier: %@", region.identifier)
+            log.debug("remove geofence identifier: \(region.identifier)")
             self?.manager.stopMonitoring(for: region)
         }
     }
@@ -209,7 +207,6 @@ extension GeofenceHandler: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        print("region: \(region.identifier) state: \(state)")
         fetchGeofenceStateHandlerSource[region.identifier]?({
             switch state {
             case .outside:
@@ -243,12 +240,23 @@ extension GeofenceHandler: CLLocationManagerDelegate {
     }
 }
 
-struct GeofenceBuilder {
+final class GeofenceBuilder {
     
     let handler = GeofenceHandler()
     
+    var entringGeofence: ((String) -> Void)?
+    
+    var exitingGeofence: ((String) -> Void)?
+    
     init() {
-        
+        handler.entringGeofence = { [weak self] identifier in
+            NSLog("entry geofence is %@", identifier)
+            self?.entringGeofence?(identifier)
+        }
+        handler.exitingGeofence = { [weak self] identifier in
+            NSLog("exit geofence is %@", identifier)
+            self?.exitingGeofence?(identifier)
+        }
     }
     
     var arrowsBackground: Bool {
