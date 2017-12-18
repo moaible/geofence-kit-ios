@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		58B11F5C1FE602E00077CB98 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B11F5B1FE602E00077CB98 /* UserDefaults.swift */; };
 		58BFD5061FE5FB190075DD36 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFD5051FE5FB190075DD36 /* AppDelegate.swift */; };
-		58BFD5081FE5FB190075DD36 /* GeofenceConsoleViewControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFD5071FE5FB190075DD36 /* GeofenceConsoleViewControllerViewController.swift */; };
+		58BFD5081FE5FB190075DD36 /* GeofenceConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFD5071FE5FB190075DD36 /* GeofenceConsoleViewController.swift */; };
 		58BFD50B1FE5FB190075DD36 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58BFD5091FE5FB190075DD36 /* Main.storyboard */; };
 		58BFD50D1FE5FB190075DD36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58BFD50C1FE5FB190075DD36 /* Assets.xcassets */; };
 		58BFD5101FE5FB190075DD36 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58BFD50E1FE5FB190075DD36 /* LaunchScreen.storyboard */; };
@@ -36,7 +36,7 @@
 		58B11F5B1FE602E00077CB98 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		58BFD5021FE5FB190075DD36 /* GeofenceConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeofenceConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58BFD5051FE5FB190075DD36 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		58BFD5071FE5FB190075DD36 /* GeofenceConsoleViewControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceConsoleViewControllerViewController.swift; sourceTree = "<group>"; };
+		58BFD5071FE5FB190075DD36 /* GeofenceConsoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofenceConsoleViewController.swift; sourceTree = "<group>"; };
 		58BFD50A1FE5FB190075DD36 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		58BFD50C1FE5FB190075DD36 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		58BFD50F1FE5FB190075DD36 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				58BFD5051FE5FB190075DD36 /* AppDelegate.swift */,
-				58BFD5071FE5FB190075DD36 /* GeofenceConsoleViewControllerViewController.swift */,
+				58BFD5071FE5FB190075DD36 /* GeofenceConsoleViewController.swift */,
 				58B11F5B1FE602E00077CB98 /* UserDefaults.swift */,
 				58BFD5251FE5FBD20075DD36 /* Geofence.swift */,
 				58BFD5091FE5FB190075DD36 /* Main.storyboard */,
@@ -357,7 +357,7 @@
 			files = (
 				58B11F5C1FE602E00077CB98 /* UserDefaults.swift in Sources */,
 				58BFD5261FE5FBD20075DD36 /* Geofence.swift in Sources */,
-				58BFD5081FE5FB190075DD36 /* GeofenceConsoleViewControllerViewController.swift in Sources */,
+				58BFD5081FE5FB190075DD36 /* GeofenceConsoleViewController.swift in Sources */,
 				58BFD5061FE5FB190075DD36 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
